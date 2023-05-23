@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "pessoa")
 public class Pessoa {
@@ -18,6 +20,9 @@ public class Pessoa {
 
     @Embedded
     private Endereco endereco;
+
+    @NotNull
+    private boolean ativo;
 
     public Long getCodigo() {
         return codigo;
@@ -41,5 +46,28 @@ public class Pessoa {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Pessoa pessoa = (Pessoa) o;
+        return ativo == pessoa.ativo && Objects.equals(codigo, pessoa.codigo) && Objects.equals(nome, pessoa.nome) && Objects.equals(endereco, pessoa.endereco);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigo, nome, endereco, ativo);
     }
 }
